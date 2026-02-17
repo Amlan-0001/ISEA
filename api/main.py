@@ -34,25 +34,36 @@ app = FastAPI(title="Privacy Preserving KYC API")
 # ==========================================================
 
 class AgeRequest(BaseModel):
+<<<<<<< HEAD
     dob_year: int
+=======
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
     current_year: int
     min_age: int = 18
 
 
 class AddressRequest(BaseModel):
+<<<<<<< HEAD
     country_code: int
     state_code: int
+=======
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
     required_country: int
     allowed_state1: int
     allowed_state2: int
 
 
 class KYCRequest(BaseModel):
+<<<<<<< HEAD
     dob_year: int
     current_year: int
     min_age: int
     country_code: int
     state_code: int
+=======
+    current_year: int
+    min_age: int
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
     required_country: int
     allowed_state1: int
     allowed_state2: int
@@ -66,7 +77,10 @@ class KYCRequest(BaseModel):
 def verify_age(request: AgeRequest):
 
     prover_result = generate_age_proof(
+<<<<<<< HEAD
         dob_year=request.dob_year,
+=======
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
         current_year=request.current_year,
         min_age=request.min_age
     )
@@ -90,8 +104,11 @@ def verify_age(request: AgeRequest):
 def verify_address(request: AddressRequest):
 
     prover_result = generate_address_proof(
+<<<<<<< HEAD
         country_code=request.country_code,
         state_code=request.state_code,
+=======
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
         required_country=request.required_country,
         allowed_state1=request.allowed_state1,
         allowed_state2=request.allowed_state2
@@ -116,11 +133,16 @@ def verify_address(request: AddressRequest):
 def verify_both(request: KYCRequest):
 
     prover_result = generate_kyc_proof(
+<<<<<<< HEAD
         dob_year=request.dob_year,
         current_year=request.current_year,
         min_age=request.min_age,
         country_code=request.country_code,
         state_code=request.state_code,
+=======
+        current_year=request.current_year,
+        min_age=request.min_age,
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
         required_country=request.required_country,
         allowed_state1=request.allowed_state1,
         allowed_state2=request.allowed_state2

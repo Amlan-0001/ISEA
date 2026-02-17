@@ -122,8 +122,13 @@ import subprocess
 import json
 import os
 
+<<<<<<< HEAD
 # 🔹 MODIFIED: No longer importing signature verification for "Layman" flow
 # from prover.signature_verify import verify_aadhaar_signature 
+=======
+# 🔹 NEW: Import signature verification
+from prover.signature_verify import verify_aadhaar_signature   # <-- ADDED
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -139,6 +144,7 @@ def run_command(command):
 
 
 # ==========================================================
+<<<<<<< HEAD
 # AGE PROOF (DIRECT INPUT)
 # ==========================================================
 
@@ -154,6 +160,28 @@ def generate_age_proof(dob_year, current_year, min_age=18):
     if age < min_age:
         print(f"Pre-check failed: Age {age} is less than {min_age}")
         return {"status": "fail", "message": f"User is under {min_age} (Age: {age})"}
+=======
+# AGE PROOF (NOW AUTOMATICALLY USES VERIFIED AADHAAR DATA)
+# ==========================================================
+
+def generate_age_proof(current_year, min_age=18):
+    """
+    🔹 MODIFIED:
+    - Removed dob_year parameter
+    - Now extracts DOB from verified Aadhaar
+    """
+
+    # 🔹 NEW: Verify Aadhaar first
+    verification_result = verify_aadhaar_signature()
+
+    if verification_result["status"] != "valid":
+        return {"status": "fail", "message": "Invalid Aadhaar Signature"}
+
+    aadhaar_data = verification_result["aadhaar_data"]
+
+    # 🔹 NEW: Extract DOB automatically
+    dob_year = aadhaar_data["dob_year"]
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
 
     input_data = {
         "dob_year": dob_year,
@@ -176,12 +204,17 @@ def generate_age_proof(dob_year, current_year, min_age=18):
 
     if result.returncode != 0:
         print(result.stderr)
+<<<<<<< HEAD
         return {"status": "fail", "message": "Proof generation failed (Circuit Check)"}
+=======
+        return {"status": "fail", "message": "User is under 18"}
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
 
     return {"status": "success"}
 
 
 # ==========================================================
+<<<<<<< HEAD
 # ADDRESS PROOF (DIRECT INPUT)
 # ==========================================================
 
@@ -199,6 +232,29 @@ def generate_address_proof(country_code, state_code,
     
     if state_code not in [allowed_state1, allowed_state2]:
         return {"status": "fail", "message": "Invalid State"}
+=======
+# ADDRESS PROOF (NOW AUTOMATICALLY USES VERIFIED AADHAAR DATA)
+# ==========================================================
+
+def generate_address_proof(required_country, allowed_state1, allowed_state2):
+    """
+    🔹 MODIFIED:
+    - Removed country_code & state_code parameters
+    - Now extracts address from verified Aadhaar
+    """
+
+    # 🔹 NEW: Verify Aadhaar first
+    verification_result = verify_aadhaar_signature()
+
+    if verification_result["status"] != "valid":
+        return {"status": "fail", "message": "Invalid Aadhaar Signature"}
+
+    aadhaar_data = verification_result["aadhaar_data"]
+
+    # 🔹 NEW: Extract address automatically
+    country_code = aadhaar_data["country_code"]
+    state_code = aadhaar_data["state_code"]
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
 
     input_data = {
         "country_code": country_code,
@@ -223,7 +279,11 @@ def generate_address_proof(country_code, state_code,
 
     if result.returncode != 0:
         print(result.stderr)
+<<<<<<< HEAD
         return {"status": "fail", "message": "Address invalid (Circuit Check)"}
+=======
+        return {"status": "fail", "message": "Address invalid"}
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
 
     return {"status": "success"}
 
@@ -232,6 +292,7 @@ def generate_address_proof(country_code, state_code,
 # COMBINED KYC PROOF
 # ==========================================================
 
+<<<<<<< HEAD
 def generate_kyc_proof(dob_year, current_year, min_age,
                        country_code, state_code,
                        required_country, allowed_state1, allowed_state2):
@@ -251,6 +312,28 @@ def generate_kyc_proof(dob_year, current_year, min_age,
     
     if state_code not in [allowed_state1, allowed_state2]:
         return {"status": "fail", "message": "Invalid State"}
+=======
+def generate_kyc_proof(current_year, min_age,
+                       required_country, allowed_state1, allowed_state2):
+    """
+    🔹 MODIFIED:
+    - Removed manual DOB & address inputs
+    - Entire data comes from verified Aadhaar
+    """
+
+    # 🔹 NEW: Verify Aadhaar first
+    verification_result = verify_aadhaar_signature()
+
+    if verification_result["status"] != "valid":
+        return {"status": "fail", "message": "Invalid Aadhaar Signature"}
+
+    aadhaar_data = verification_result["aadhaar_data"]
+
+    # 🔹 NEW: Extract all attributes automatically
+    dob_year = aadhaar_data["dob_year"]
+    country_code = aadhaar_data["country_code"]
+    state_code = aadhaar_data["state_code"]
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
 
     input_data = {
         "dob_year": dob_year,
@@ -278,6 +361,10 @@ def generate_kyc_proof(dob_year, current_year, min_age,
 
     if result.returncode != 0:
         print(result.stderr)
+<<<<<<< HEAD
         return {"status": "fail", "message": "KYC invalid (Circuit Check)"}
+=======
+        return {"status": "fail", "message": "KYC invalid"}
+>>>>>>> c9028e9b23d56282869d12e7f804cfec5edbf843
 
     return {"status": "success"}
